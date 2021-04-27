@@ -13,6 +13,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    permissions: 
+      contents: read
+      packages: write 
 
     steps:
     - uses: actions/checkout@v2
@@ -24,4 +28,13 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew jar
+    - name: Build container image
+      uses: docker/build-push-action@v1
+      with: 
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        repository: ${{ github.repository }}/Vault-public 
+        tag_with_sha: true
+        tag_with_ref: true 
