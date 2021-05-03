@@ -46,7 +46,7 @@ public class ResearchConfig extends Config {
         this.MOD_RESEARCHES.add(new ModResearch("Storage Noob", 1, "ironchest", "metalbarrels").withRestrictions(false, false, false, false, true));
         this.MOD_RESEARCHES.add(new ModResearch("Storage Master", 2, "storage_overhaul", "storagedrawers", "modularrouters").withRestrictions(false, false, false, false, true));
         this.MOD_RESEARCHES.add(new ModResearch("Storage Refined", 6, "refinedstorage").withRestrictions(false, false, false, false, true));
-        this.MOD_RESEARCHES.add(new ModResearch("Storage Energistic", 6, "appliedenergistics").withRestrictions(false, false, false, false, true));
+        this.MOD_RESEARCHES.add(new ModResearch("Storage Energistic", 6, "appliedenergistics2").withRestrictions(false, false, false, false, true));
         this.MOD_RESEARCHES.add(new ModResearch("Storage Enthusiast", 4, "rftoolsstorage").withRestrictions(false, false, false, false, true));
         this.MOD_RESEARCHES.add(new ModResearch("Decorator", 1, "decorative_blocks", "camera", "masonry").withRestrictions(false, false, false, false, true));
         this.MOD_RESEARCHES.add(new ModResearch("Decorator Pro", 2, "mcwbridges", "mcwdoors", "mcwroofs", "mcwwindows", "enviromats", "blockcarpentry", "platforms").withRestrictions(false, false, false, false, true));
@@ -86,5 +86,4 @@ public class ResearchConfig extends Config {
         customResearch.getItemRestrictions().put("mekanism:formulaic_assemblicator", Restrictions.forItems(true));
         this.CUSTOM_RESEARCHES.add(customResearch);
     }
-
 }
