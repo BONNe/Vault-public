@@ -1,14 +1,30 @@
 package iskallia.vault.init;
 
 import iskallia.vault.Vault;
-import iskallia.vault.recipe.UnidentifiedRelicRecipe;
-import iskallia.vault.recipe.UpgradeCrystalRecipe;
+import iskallia.vault.recipe.*;
 import net.minecraft.item.crafting.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.event.RegistryEvent;
 
-public class ModRecipes {
+
+/**
+ * This class loads custom Vault Recipes.
+ */
+public class ModRecipes
+{
+	/**
+	 * Key Press Recipe Type class.
+	 */
+	public static final IRecipeType<KeyPressRecipe> KEY_PRESS_RECIPE = new IRecipeType<KeyPressRecipe>()
+	{
+		@Override
+		public String toString()
+		{
+			return Vault.id("key_press_recipe").toString();
+		}
+	};
+
 
 	/**
 	 * Key Press Recipe Type class.
@@ -31,16 +47,19 @@ public class ModRecipes {
 	 */
 	public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event)
 	{
+		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(KEY_PRESS_RECIPE.toString()), KEY_PRESS_RECIPE);
+		event.getRegistry().register(KeyPressRecipe.SERIALIZER);
+
 		Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(UPGRADE_CRYSTAL_RECIPE.toString()), UPGRADE_CRYSTAL_RECIPE);
 		event.getRegistry().register(UpgradeCrystalRecipe.SERIALIZER);
-	}
 
+	}
 
 	public static class Serializer {
 		//public static SpecialRecipeSerializer<RelicSetRecipe> CRAFTING_SPECIAL_RELIC_SET;
 		//public static SpecialRecipeSerializer<MysteryStewRecipe> CRAFTING_SPECIAL_MYSTERY_STEW;
-//		public static SpecialRecipeSerializer<UnidentifiedRelicRecipe> CRAFTING_SPECIAL_UNIDENTIFIED_RELIC;
-//		public static SpecialRecipeSerializer<UpgradeCrystalRecipe> CRAFTING_SPECIAL_UPGRADE_CRYSTAL;
+		//public static SpecialRecipeSerializer<UnidentifiedRelicRecipe> CRAFTING_SPECIAL_UNIDENTIFIED_RELIC;
+		//public static SpecialRecipeSerializer<UpgradeCrystalRecipe> CRAFTING_SPECIAL_UPGRADE_CRYSTAL;
 
 		public static void register(RegistryEvent.Register<IRecipeSerializer<?>> event) {
 			//CRAFTING_SPECIAL_RELIC_SET = register(event, "crafting_special_relic_set", new SpecialRecipeSerializer<>(RelicSetRecipe::new));
@@ -55,5 +74,4 @@ public class ModRecipes {
 			return serializer;
 		}
 	}
-
 }

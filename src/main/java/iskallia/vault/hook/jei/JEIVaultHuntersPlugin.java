@@ -8,18 +8,33 @@ package iskallia.vault.hook.jei;
 
 
 import iskallia.vault.Vault;
+import iskallia.vault.client.gui.screen.KeyPressScreen;
+import iskallia.vault.container.KeyPressContainer;
 import iskallia.vault.hook.jei.anvil.AnvilRecipeMaker;
+import iskallia.vault.hook.jei.category.KeyPressCategory;
+import iskallia.vault.init.ModBlocks;
+import iskallia.vault.init.ModRecipes;
+import iskallia.vault.recipe.KeyPressRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.inventory.SmithingTableScreen;
+import net.minecraft.inventory.container.SmithingTableContainer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 
 @JeiPlugin
 public class JEIVaultHuntersPlugin implements IModPlugin
 {
+    private IRecipeCategory<KeyPressRecipe> keyPressCategory;
+
+
     @Override
     public ResourceLocation getPluginUid()
     {
@@ -51,7 +66,11 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration)
     {
-        // Do not have a custom categories
+        IJeiHelpers jeiHelpers = registration.getJeiHelpers();
+        IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+        registration.addRecipeCategories(
+            keyPressCategory = new KeyPressCategory(guiHelper)
+        );
     }
 
 
@@ -60,26 +79,29 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     {
         IVanillaRecipeFactory vanillaRecipeFactory = registration.getVanillaRecipeFactory();
         registration.addRecipes(AnvilRecipeMaker.getAnvilRecipes(vanillaRecipeFactory), VanillaRecipeCategoryUid.ANVIL);
+        registration.addRecipes(
+            Minecraft.getInstance().world.getRecipeManager().getRecipesForType(ModRecipes.KEY_PRESS_RECIPE),
+            Vault.id("key_press_recipe"));
     }
 
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration)
     {
-        // Do not have a custom handlers
+        registration.addRecipeClickArea(KeyPressScreen.class, 102, 48, 22, 15, Vault.id("key_press_recipe"));
     }
 
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration)
     {
-        // Do not have a custom transfer handlers
+        registration.addRecipeTransferHandler(KeyPressContainer.class, Vault.id("key_press_recipe"), 0, 2, 3, 36);
     }
 
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
-        // Do not have a custom catalysts
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.KEY_PRESS), Vault.id("key_press_recipe"));
     }
 }
