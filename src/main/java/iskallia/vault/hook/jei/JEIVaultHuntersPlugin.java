@@ -20,21 +20,27 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.SmithingTableScreen;
-import net.minecraft.inventory.container.SmithingTableContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 
+/**
+ * This class adds and manages custom content in JEI.
+ */
 @JeiPlugin
 public class JEIVaultHuntersPlugin implements IModPlugin
 {
-    private IRecipeCategory<KeyPressRecipe> keyPressCategory;
-
-
+    /**
+     * Vault Plugin Id.
+     */
     @Override
     public ResourceLocation getPluginUid()
     {
@@ -42,27 +48,9 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     }
 
 
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistration registration)
-    {
-        // Do not have item subtypes yet.
-    }
-
-
-    @Override
-    public void registerIngredients(IModIngredientRegistration registration)
-    {
-        // Do not have a custom ingredients yet.
-    }
-
-
-    @Override
-    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration)
-    {
-        // Do not have a custom vanilla extensions
-    }
-
-
+    /**
+     * This method registers custom categories to the JEI.
+     */
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration)
     {
@@ -74,6 +62,9 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     }
 
 
+    /**
+     * This method adds custom recipes to the JEI.
+     */
     @Override
     public void registerRecipes(IRecipeRegistration registration)
     {
@@ -85,6 +76,9 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     }
 
 
+    /**
+     * This method adds Key Press Recipes GUI handler to JEI.
+     */
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration)
     {
@@ -92,6 +86,9 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     }
 
 
+    /**
+     * This method adds Key Press Recipes Transfer handler to JEI GUI.
+     */
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration)
     {
@@ -99,9 +96,17 @@ public class JEIVaultHuntersPlugin implements IModPlugin
     }
 
 
+    /**
+     * This method adds Key Press Recipes catalyst to JEI GUI.
+     */
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.KEY_PRESS), Vault.id("key_press_recipe"));
     }
+
+    /**
+     * New category for the JEI.
+     */
+    private IRecipeCategory<KeyPressRecipe> keyPressCategory;
 }

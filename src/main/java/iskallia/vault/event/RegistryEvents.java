@@ -75,7 +75,6 @@ public class RegistryEvents {
     @SubscribeEvent
     public static void onRecipeRegister(RegistryEvent.Register<IRecipeSerializer<?>> event) {
         ModRecipes.registerRecipes(event);
-        ModRecipes.Serializer.register(event);
     }
 
     @SubscribeEvent
