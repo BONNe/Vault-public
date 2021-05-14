@@ -132,7 +132,15 @@ public class VaultAltarTileEntity extends TileEntity implements ITickableTileEnt
         this.recipe = null;
         this.infusionTimer = -1;
         this.infusing = false;
-        ItemStack crystal = ItemVaultCrystal.getRandomCrystal();
+
+        ItemStack crystal;
+
+        if (!ModConfigs.VAULT_BOSSES.BOSS_LIST.isEmpty() && ModConfigs.VAULT_BOSSES.CHANCE > 0) {
+            int nextBoss = world.getRandom().nextInt(ModConfigs.VAULT_BOSSES.BOSS_LIST.size());
+            crystal = ItemVaultCrystal.getCrystalWithBoss(ModConfigs.VAULT_BOSSES.BOSS_LIST.get(nextBoss));
+        } else {
+            crystal = ItemVaultCrystal.getRandomCrystal();
+        }
 
         world.addEntity(new ItemEntity(world, getPos().getX() + .5d, pos.getY() + 1.5d, pos.getZ() + .5d, crystal));
     }
