@@ -57,6 +57,7 @@ public class ModConfigs {
     public static PlayerExpConfig PLAYER_EXP;
     public static FinalVaultGeneralConfig FINAL_VAULT_GENERAL;
     public static VaultBossesConfig VAULT_BOSSES;
+    public static VaultFightersConfig VAULT_FIGHTERS;
 
     public static void register() {
         ABILITIES = (AbilitiesConfig) new AbilitiesConfig().readConfig();
@@ -107,6 +108,7 @@ public class ModConfigs {
         GLOBAL_TRADER = (GlobalTraderConfig) new GlobalTraderConfig().readConfig();
         PLAYER_EXP = (PlayerExpConfig) new PlayerExpConfig().readConfig();
         FINAL_VAULT_GENERAL = (FinalVaultGeneralConfig) new FinalVaultGeneralConfig().readConfig();
+        VAULT_FIGHTERS = (VaultFightersConfig) new VaultFightersConfig().readConfig();
         VAULT_BOSSES = (VaultBossesConfig) new VaultBossesConfig().readConfig();
         Vault.LOGGER.info("Vault Configs are loaded successfully!");
     }
