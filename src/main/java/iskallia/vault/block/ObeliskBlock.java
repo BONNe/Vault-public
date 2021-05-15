@@ -92,7 +92,9 @@ public class ObeliskBlock extends Block {
     public void spawnBoss(VaultRaid raid, ServerWorld world, BlockPos pos, EntityScaler.Type type) {
         LivingEntity boss;
 
-        if(type == EntityScaler.Type.BOSS) {
+        if (raid.playerBossName != null) {
+            boss = ModConfigs.VAULT_MOBS.getForLevel(raid.level).RAFFLE_BOSS_POOL.getRandom(world.getRandom()).create(world);
+        } else if(type == EntityScaler.Type.BOSS) {
             boss = ModConfigs.VAULT_MOBS.getForLevel(raid.level).BOSS_POOL.getRandom(world.getRandom()).create(world);
         } else {
             return;
