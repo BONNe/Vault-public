@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class VaultBossesConfig extends Config {
 	/**
+	 * Variable that stores currently active pool mode.
+	 */
+	@Expose public Mode POOL_MODE;
+
+	/**
 	 * List of custom defined boss names form which one will be chosen.
 	 */
 	@Expose public List<String> BOSS_LIST;
@@ -20,6 +25,20 @@ public class VaultBossesConfig extends Config {
 	 * Chance for a crystal to be a boss crystal.
 	 */
 	@Expose public float CHANCE;
+
+	/**
+	 * Different modes for the raffle fighter choosing.
+	 */
+	public enum Mode {
+		// The player who started the vault
+		PLAYER,
+		// Random player from online player list.
+		ONLINE_PLAYERS,
+		// Random player from whitelisted player list.
+		WHITELIST,
+		// Random player from given list.
+		LIST
+	}
 
 	@Override
 	public String getName() {
