@@ -29,7 +29,7 @@ public class ModEntities {
 
     public static void register(RegistryEvent.Register<EntityType<?>> event) {
         // changed because of default config contains arena_boss instead of fighter entity.
-        FIGHTER = register("arena_boss", EntityType.Builder.create(FighterEntity::new, EntityClassification.MONSTER)
+        FIGHTER = register("fighter", EntityType.Builder.create(FighterEntity::new, EntityClassification.MONSTER)
                 .size(0.6F, 1.95F), ZombieEntity::func_234342_eQ_, event);
         MONSTER_EYE = register("monster_eye", EntityType.Builder.create(MonsterEyeEntity::new, EntityClassification.MONSTER)
                 .size(2.04F * 2, 2.04F * 2), ZombieEntity::func_234342_eQ_, event);
