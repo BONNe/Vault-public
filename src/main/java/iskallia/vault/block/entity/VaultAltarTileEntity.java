@@ -2,6 +2,7 @@ package iskallia.vault.block.entity;
 
 import iskallia.vault.altar.AltarInfusionRecipe;
 import iskallia.vault.altar.RequiredItem;
+import iskallia.vault.config.VaultBossesConfig;
 import iskallia.vault.init.ModBlocks;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModItems;
@@ -10,6 +11,7 @@ import iskallia.vault.util.VectorHelper;
 import iskallia.vault.world.data.PlayerVaultAltarData;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -132,7 +134,66 @@ public class VaultAltarTileEntity extends TileEntity implements ITickableTileEnt
         this.recipe = null;
         this.infusionTimer = -1;
         this.infusing = false;
-        ItemStack crystal = ItemVaultCrystal.getRandomCrystal();
+
+        ItemStack crystal;
+
+        if (ModConfigs.VAULT_BOSSES.CHANCE > 0 && world.getRandom().nextFloat() <= ModConfigs.VAULT_BOSSES.CHANCE) {
+
+            String name;
+
+            // Resolves a risk of incorrect input value.
+            if (ModConfigs.VAULT_BOSSES.POOL_MODE == null) {
+                ModConfigs.VAULT_BOSSES.POOL_MODE = VaultBossesConfig.Mode.PLAYER;
+            }
+
+            switch (ModConfigs.VAULT_BOSSES.POOL_MODE) {
+                case ONLINE_PLAYERS: {
+                    // Choose random name from online player list.
+                    String[] onlinePlayerNames = ((ServerWorld) world).getServer().getPlayerList().getOnlinePlayerNames();
+                    name = onlinePlayerNames[world.getRandom().nextInt(onlinePlayerNames.length)];
+                    break;
+                }
+                case WHITELIST: {
+                    // Choose random name from whitelist.
+                    String[] whitelistedPlayerNames = ((ServerWorld) world).getServer().getPlayerList().getWhitelistedPlayerNames();
+
+                    if (whitelistedPlayerNames.length == 0)
+                    {
+                        name = null;
+                    }
+                    else
+                    {
+                        name = whitelistedPlayerNames[world.getRandom().nextInt(whitelistedPlayerNames.length)];
+                    }
+
+                    break;
+                }
+                case LIST: {
+                    // Choose random name from fighter list.
+                    if (ModConfigs.VAULT_BOSSES.BOSS_LIST == null || ModConfigs.VAULT_BOSSES.BOSS_LIST.isEmpty())
+                    {
+                        name = null;
+                    }
+                    else
+                    {
+                        int nextFighter = world.getRandom().nextInt(ModConfigs.VAULT_BOSSES.BOSS_LIST.size());
+                        name = ModConfigs.VAULT_BOSSES.BOSS_LIST.get(nextFighter);
+                    }
+                    break;
+                }
+                default: {
+                    // Use owner player name.
+                    ServerPlayerEntity player = ((ServerWorld) world).getServer().getPlayerList().getPlayerByUUID(this.owner);
+                    name = player != null ? player.getName().getString() : null;
+                    break;
+                }
+            }
+
+            // Spawn crystal with a boss name or create a random crystal.
+            crystal = name != null && !name.isEmpty() ? ItemVaultCrystal.getCrystalWithBoss(name) : ItemVaultCrystal.getRandomCrystal();
+        } else {
+            crystal = ItemVaultCrystal.getRandomCrystal();
+        }
 
         world.addEntity(new ItemEntity(world, getPos().getX() + .5d, pos.getY() + 1.5d, pos.getZ() + .5d, crystal));
     }
